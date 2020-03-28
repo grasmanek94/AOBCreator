@@ -33,13 +33,18 @@ namespace AOBCreator
                 int fixups = 0;
                 for (int i = 0; i < fxp.Length; ++i)
                 {
-                    if (fxp[i].ToLower() == sxp[i].ToLower())
+                    string left = fxp[i].ToLower();
+                    string right = sxp[i].ToLower();
+                    if (left == right)
                     {
                         res += fxp[i] + " ";
                     }
                     else
                     {
-                        ++fixups;
+                        if (left != "??" && right != "??")
+                        {
+                            ++fixups;
+                        }
                         res += "?? ";
                     }
                 }
