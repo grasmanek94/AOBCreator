@@ -72,6 +72,8 @@ namespace AOBCreator
                     }
                 }
 
+                wildcards += changes;
+
                 Console.WriteLine("Result: ");
                 Console.WriteLine(res);
                 Console.WriteLine(
