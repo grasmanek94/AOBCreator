@@ -30,28 +30,54 @@ namespace AOBCreator
                 }
 
                 string res = "";
-                int fixups = 0;
+                int changes = 0;
+                int wildcards = 0;
+                int usable = 0;
+                int usable_non_00_FF = 0;
+
                 for (int i = 0; i < fxp.Length; ++i)
                 {
                     string left = fxp[i].ToLower();
                     string right = sxp[i].ToLower();
+
+                    bool left_wildcard = left == "??" || left == "?";
+                    bool right_wildcard = right == "??" || right == "?";
+
+                    if (left_wildcard || right_wildcard)
+                    {
+                        ++wildcards;
+                    }
+
                     if (left == right)
                     {
+                        if (!left_wildcard && !right_wildcard)
+                        {
+                            ++usable;
+                            if(left != "ff" && left != "00" && left != "0")
+                            {
+                                ++usable_non_00_FF;
+                            }
+                        }
+
                         res += fxp[i] + " ";
                     }
                     else
                     {
-                        if (left != "??" && right != "??")
+                        if (!left_wildcard && !right_wildcard)
                         {
-                            ++fixups;
+                            ++changes;
                         }
+
                         res += "?? ";
                     }
                 }
 
                 Console.WriteLine("Result: ");
                 Console.WriteLine(res);
-                Console.WriteLine("Bytes changed: " + fixups.ToString() + "/" + fxp.Length.ToString());
+                Console.WriteLine(
+                    "Bytes changed: {0}, wildcards: {1}, usable: {2}, really usable(not 00 or FF): {3}, total: {4}",
+                    changes, wildcards, usable, usable_non_00_FF, fxp.Length
+                );
             }
         }
     }
